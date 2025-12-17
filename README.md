@@ -1,4 +1,4 @@
-#rember
+# rember
 
 Rember is a CLI tool that keeps track of all the paper/electronic notes you take in school/work/other areas, assigns each a base-16 numerical identifies, and keeps track of the directories, subdirectories, and individual notes. In addition to storing the data for your notes (this could be useful if you have many binders/notebooks/computers containing notes), a feature to review your notes based on the time since initially learning the material is available. This is based on the Ebbinghaus Forgetting Curve's principles that reviewing your learning material approximately one day, a week, and three-to-four weeks assists in information retention. Rember keeps track of the date you learned each note for this.
 
