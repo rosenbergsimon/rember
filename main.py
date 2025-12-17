@@ -8,24 +8,24 @@ DATA_FILE = "data.json"
 app = typer.Typer()
 
 @app.command()
-def login(today_date: str = CURRENT_DATE_STR):
-    if len(today_date) != 10:
+def login(date: str = CURRENT_DATE_STR):
+    if len(date) != 10:
         print("The entered date is not correct format")
         return
-    if today_date[4] != "-":
+    if date[4] != "-":
         print("Date is in wrong fomrat")
         return
     with open(f"{DATA_FILE}") as file:
         entries = json.load(file)
     if "dates_login" in entries:
-        if today_date in entries["dates_login"]:
+        if date in entries["dates_login"]:
             print("You have already logged in for this day.")
             return
         else:
-            entries["dates_login"].append(today_date)
+            entries["dates_login"].append(date)
             print("Today's date has been entered into the log.")
     else:
-        entries["dates_login"] = [today_date]
+        entries["dates_login"] = [date]
         print("Today's date has been entered into the log.")
     
     with open(f"{DATA_FILE}", "w") as file:
