@@ -1,10 +1,14 @@
 # rember
 
-Rember is a CLI tool that keeps track of all the paper/electronic notes you take in school/work/other areas, assigns each a base-16 numerical identifies, and keeps track of the directories, subdirectories, and individual notes. In addition to storing the data for your notes (this could be useful if you have many binders/notebooks/computers containing notes), a feature to review your notes based on the time since initially learning the material is available. This is based on the Ebbinghaus Forgetting Curve's principles that reviewing your learning material approximately one day, a week, and three-to-four weeks assists in information retention. Rember keeps track of the date you learned each note for this.
+Rember is a CLI tool that keeps records of all the paper and electronic notes you take for school and work, and assigns each a base-16 numerical identifier. In addition to storing the records for your notes (this could be useful if you have many binders/notebooks/computers containing notes), a feature to review your notes based on the time since initially learning the material is available. This is based on the Ebbinghaus Forgetting Curve's principles that reviewing your learning material approximately one day, a week, and three-to-four weeks assists in information retention. Rember keeps track of the date you learned each note for this.
 
 # Setup
 
-Rember utilizes the Typer CLI library. No other dependencies are required. The program has limited error handling. In the main.py file, change the DATA_FILE global variable to the path of the target JSON file to use for logging all the data, in case you want a different test file or something. 
+Rember utilizes the Typer CLI library. No other dependencies are required. The program has limited error handling. In the main.py file, change the DATA_FILE global variable to the path of the target JSON file to use for logging all the data, in case you want a different test file or something. To change the days since learning a note to trigger a review advisory instead of the default 1, 6, and 21 days, open the data.json file (the login command needs to have been run at least once before), and change the strings under "review_periods" key. Any length of options is acceptable. 
+
+# Information
+
+Notes are stored in the format of file paths on a computer, so for example you could have a Math directory with a calculus subdirectory, with further subdirectiories for limits, derivativs, chain rule, etc. Each of those could have further individual notes underneath. For example, one note could be stored as math.calculus.limits.introduction. 
 
 # Documentation
 
@@ -25,4 +29,8 @@ view allows the viewing of the "directories" of notes logged in the JSON so far.
 
     python ./main.py review
 
-review finds out what notes need to be reviewed today. It bases this on by finding what notes are 1, 6, and 21 days old. 
+review finds out what notes need to be reviewed today.
+
+    python ./main.py delete <note.path>
+
+deletes the note from storage. The id codes for other notes are not changed.
