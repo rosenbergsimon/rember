@@ -4,7 +4,7 @@ import json
 
 CURRENT_DATE = dt.datetime.now()
 CURRENT_DATE_STR = CURRENT_DATE.strftime("%Y-%m-%d")
-DATA_FILE = "test.json"
+DATA_FILE = "data.json"
 app = typer.Typer()
 
 @app.command()
