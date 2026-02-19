@@ -76,7 +76,11 @@ def print_ascii_tree(tree, prefix=""):
 def view():
     with open(f"{DATA_FILE}") as file:
         data = json.load(file)
-    entries = data["entries"]
+    try:
+        entries = data["entries"]
+    except KeyError:
+        print("Please enter some notes first.")
+        return
     tree = {}
 
     for i in entries:
