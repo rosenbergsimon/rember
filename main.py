@@ -59,41 +59,35 @@ def add(title: str, date: str = CURRENT_DATE_STR):
         json.dump(data, file, indent=4)
     print(f"The note stored at {title} has been added as note ID {new_code}.")
 
+def print_ascii_tree(tree, prefix=""):
+    keys = sorted(tree.keys())
+    last_key = keys[-1] if keys else None
+
+    for i in keys:
+        connector = "└── " if i == last_key else "├── "
+        if "0x" in list(tree[i].keys())[0]:
+            print(prefix + connector + i + " " + list(tree[i].keys())[0])
+        else:
+            print(prefix + connector + i)
+            extension = "    " if i == last_key else "│   "
+            print_ascii_tree(tree[i], prefix + extension)
+
 @app.command()
 def view():
     with open(f"{DATA_FILE}") as file:
         data = json.load(file)
     entries = data["entries"]
-    notes = [[i["title"].split("."), len(i["title"].split("."))] for i in entries]
-    
-    while True:
-        search = input("Enter a note category to view subclasses of notes, or nothing for the root tree: ")
-        length_search = len(search.split("."))
-        if search == "":
-            length_search = 0
-        split_search = search.split(".")
-        tree_result = []
-        for j in notes:
-            if j[1] > length_search:
-                if j[0][0:length_search] == split_search:
-                    tree_result.append(j[0][length_search])
-                if length_search == 0:
-                    tree_result.append(j[0][0])
-        tree_result_filtered = []
+    tree = {}
 
-        for l in tree_result:
-            if l in tree_result_filtered:
-                pass
-            else:
-                tree_result_filtered.append(l)
-        if split_search == [""]:
-            print("You entered the root of the note tree. ")
-        else:
-            print(f"You entered: {search} ")
-        if len(tree_result_filtered) == 0:
-            print("There are no sub-folders of notes below the above in memory. ")
-        for k in tree_result_filtered:
-            print(k)
+    for i in entries:
+        parts = i["title"].split(".")
+        current = tree
+        for j in parts:
+            current = current.setdefault(j, {})
+        current_code = i["code"]
+        current = current.setdefault(current_code, {})
+
+    print_ascii_tree(tree)
 
 @app.command()
 def review():
