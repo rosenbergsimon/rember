@@ -25,7 +25,7 @@ add adds a new note into the JSON file, with a corresponding date. Running add w
 
     python ./main.py view
 
-view allows the viewing of the "directories" of notes logged in the JSON so far. Follow the prompts to enter a directory, and the corresponding subdirectories and files will display. Use periods "." as delimeters. 
+view allows the viewing of the "directories" of notes, and their corresponding entries and hex codes which have been logged in the JSON so far. It will display like running the "tree" command on unix. 
 
     python ./main.py review
 
