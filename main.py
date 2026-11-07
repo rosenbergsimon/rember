@@ -49,11 +49,19 @@ def add(title: str, date: str = CURRENT_DATE_STR):
     entries = data["entries"]
     highest_id = 0
     for i in entries:
-        if int(i["code"], 16) > highest_id:
-            highest_id = int(i["code"], 16)
+        for j in i["code"]:
+            if int(j, 16) > highest_id:
+                highest_id = int(j, 16)
     new_code = hex(highest_id + 1)
     new_code = str(new_code)
-    entries.append({"code": new_code, "date": date, "title": title})
+    entry_exists = False
+    for i in range(len(entries)):
+        if entries[i]["title"] == title:
+            entries[i]["code"].append(new_code)
+            entries[i]["date"].append(date)
+            entry_exists = True
+    if not entry_exists:    
+        entries.append({"code": [new_code], "date": [date], "title": title})
     data["entries"] = entries
     with open(f"{DATA_FILE}", "w") as file:
         json.dump(data, file, indent=4)
@@ -89,6 +97,7 @@ def view():
         for j in parts:
             current = current.setdefault(j, {})
         current_code = i["code"]
+        current_code = str(current_code).replace("[", "").replace("]", "").replace("'", "").replace(",", "")
         current = current.setdefault(current_code, {})
 
     print_ascii_tree(tree)
@@ -105,7 +114,8 @@ def review():
         return
     note_entries = [k for k in data["entries"]]
     for l in range(len(note_entries)):
-        note_entries[l]["date"] = dt.datetime.strptime(note_entries[l]["date"], "%Y-%m-%d")
+        for i in range(len(note_entries[l]["date"])):
+            note_entries[l]["date"][i] = dt.datetime.strptime(note_entries[l]["date"][i], "%Y-%m-%d")
 
     dates_list = [int(i) for i in data["review_periods"]]
     dates_to_review = []
@@ -117,7 +127,7 @@ def review():
     review_count = 0
     for i in range(len(note_entries)):
         for j in dates_to_review:
-            if j[1] == note_entries[i]["date"]:
+            if j[1] in note_entries[i]["date"]:
                 print(f"Review: {note_entries[i]["title"]}, code {note_entries[i]["code"]}. ({j[0]} day old notes.)")
                 review_count += 1
 
