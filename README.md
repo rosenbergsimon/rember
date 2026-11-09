@@ -21,11 +21,12 @@ login registers that today is a day you wish to register as a "learning day". Da
     python3 ./main.py add <note.path> --date <yyyy-mm-dd>
     # example: python ./main.py add math.calculus.limits.introduction --date 2025-12-01
 
-add adds a new note into the JSON file, with a corresponding date. Running add will return the hex number corresponding to that note. Using periods "." should be used as delimeters for "directories".
+add adds a new note into the JSON file, with a corresponding date. Running add will return the hex number corresponding to that note. Using periods "." should be used as delimeters for "directories". If you take a new note, but wish to use the same note title/path, you can enter the same note title, and it will assign another hex number to the note. 
 
     python3 ./main.py view
+    python3 ./main.py view --title <note.path>
 
-view allows the viewing of the "directories" of notes, and their corresponding entries and hex codes which have been logged in the JSON so far. It will display like running the "tree" command on unix. 
+view allows the viewing of the "directories" of notes, and their corresponding entries and hex codes which have been logged in the JSON so far. It will display like running the "tree" command on unix. If the --title flag is specified, entering part of a title path will show only subordinate notes. For example, --title math.calculus will only show a tree for notes that begin with math.calculus
 
     python3 ./main.py review
 

@@ -81,7 +81,7 @@ def print_ascii_tree(tree, prefix=""):
             print_ascii_tree(tree[i], prefix + extension)
 
 @app.command()
-def view():
+def view(title: str = None):
     with open(f"{DATA_FILE}") as file:
         data = json.load(file)
     try:
@@ -90,15 +90,37 @@ def view():
         print("Please enter some notes first.")
         return
     tree = {}
+    if title:
+        title_branches = title.count(".") + 1
+    else:
+        title_branches = 0
 
     for i in entries:
         parts = i["title"].split(".")
-        current = tree
-        for j in parts:
-            current = current.setdefault(j, {})
-        current_code = i["code"]
-        current_code = str(current_code).replace("[", "").replace("]", "").replace("'", "").replace(",", "")
-        current = current.setdefault(current_code, {})
+        if title_branches > len(parts):
+            title_branches = len(parts)
+        new_parts = ""
+        for j in range(title_branches):
+            if j >= 1:
+                new_parts = new_parts + "."
+            new_parts = new_parts + parts[j]
+        if title and new_parts == title:
+            current = tree
+            parts = parts[(title_branches):]
+            for j in parts:
+                current = current.setdefault(j, {})
+            current_code = i["code"]
+            current_code = str(current_code).replace("[", "").replace("]", "").replace("'", "").replace(",", "")
+            current = current.setdefault(current_code, {})
+        if title and new_parts != title:
+            pass
+        if not title:
+            current = tree
+            for j in parts:
+                current = current.setdefault(j, {})
+            current_code = i["code"]
+            current_code = str(current_code).replace("[", "").replace("]", "").replace("'", "").replace(",", "")
+            current = current.setdefault(current_code, {})
 
     print_ascii_tree(tree)
 
